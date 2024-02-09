@@ -3,9 +3,28 @@
 #include <vector>
 using namespace std;
 
-// struct token {
+struct Token {
+    string kind;
+    double value;
+    string name; //Only used for variables: v
+    Token(string s) : kind(s), value(0) {}
+    Token(string s, double d) : kind(s), value(d) {}
+    Token(string s, string n) : kind(s), value(0), name(n) {
+        // cout << "Check To See If We already got this one!\n";
+        // //Check to see if this variable already exists, and if it does, get it value
+        // //Or else add it to the list of variables. 
+    }
+};
 
-// };
+//Overloads the printing of Token
+ostream& operator<<(ostream& os, const Token& tok) {
+    if (tok.kind == "d")
+        return os << tok.kind << "[" << tok.value << "]";
+    else if (tok.kind == "v")
+        return os << tok.kind << "[" << tok.name << "][" << tok.value << "]"; 
+    return os << tok.kind;
+}
+
 //Will Print All The values within a container. 
 template <class InputIterator>
 void printContainer(InputIterator start, InputIterator end) {
@@ -22,16 +41,16 @@ void printContainer(InputIterator start, InputIterator end) {
 
 
 //Will parse all the characters into tokens. 
-vector<string> parse(string& line) {
-    vector<string> vs;
+vector<Token> parse(string& line) {
+    vector<Token> tokens;
     int i = 0;
 
     while (i < line.size()) {
 
         //Looking for INT_CONST
-        if (isdigit(line.at(i))) {
-            string tempDig = "n: ";     // initializes the digit 
-            while (isdigit(line.at(i))) {
+        if (isdigit(line.at(i)) || line.at(i) == '.') {
+            string tempDig = "";     // initializes the digit 
+            while (isdigit(line.at(i)) || line.at(i) == '.') {
                 tempDig += string(1, line.at(i));
                 if (line.size() - 1 <= i) {
                     break;
@@ -43,12 +62,12 @@ vector<string> parse(string& line) {
                 }
                 i++;
             }
-            vs.push_back(tempDig);
+            tokens.push_back(Token("d", stod(tempDig)));
         }
 
         //Looking for variable names.
         if (isalpha(line.at(i))) {
-            string tempName = "w: "; //initializes the variable name. 
+            string tempName = ""; //initializes the variable name. 
             while (isalnum(line.at(i))) {
                 tempName += string(1, line.at(i));
                 if (line.size() - 1 <= i) {
@@ -58,21 +77,22 @@ vector<string> parse(string& line) {
                     i++;
                 }
             }
-            vs.push_back(tempName);
+            tokens.push_back(Token("v", tempName));
         }
 
         switch (line.at(i)) {
         case '(':
-            vs.push_back("LP");
+            tokens.push_back(Token("LP"));
             break;
         case ')':
-            vs.push_back("RP");
+            tokens.push_back(Token("RP"));
             break;
         case '+':
         case '-':
         case '*':
         case '/':
-            vs.push_back(string(1, line.at(i)));
+        case '=':
+            tokens.push_back(Token(string(1, line.at(i))));
         }
 
         //almost need something to itterate 
@@ -80,14 +100,14 @@ vector<string> parse(string& line) {
     }
 
     cout << endl;
-    return vs;
+    return tokens;
 }
 
 int main() {
     cout << "Calculator App!\n";
     string str;
     while (getline(cin, str)) {
-        vector<string> vec = parse(str);
+        vector<Token> vec = parse(str);
         printContainer(vec.begin(), vec.end());
         cout << endl;
     }
