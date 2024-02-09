@@ -1,0 +1,9 @@
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/Experimental.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/Nightly.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/Continuous.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/NightlyMemoryCheck.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/Calculator.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/PACKAGE.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/RUN_TESTS.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/19032/Documents/BigCode/C++Calculator/build/CMakeFiles/ZERO_CHECK.dir

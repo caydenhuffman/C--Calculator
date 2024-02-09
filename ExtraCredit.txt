@@ -1,0 +1,2 @@
+If you implement variables then you can get bonus points. 
+Seems like it wouldn't be hard. like "m=3"; 
