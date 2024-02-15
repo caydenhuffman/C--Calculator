@@ -9,6 +9,7 @@ enum nums { S = 1, R = 2, G = 3 };
 
 map<string, double> variables;
 
+
 struct Token {
     string kind;
     double value;
@@ -138,30 +139,32 @@ void printState(vector<Token>& tokens, vector<int>& rowStack, vector<Token>& tok
 }
 
 Action getAction(int row, int col) {
-    const Action array[23][15] = {
-        /*0*/    {Action(S,2), Action(), Action(), Action(), Action(), Action(), Action(), Action(S, 6), Action(), Action(S, 7), Action(), Action(G, 1), Action(G, 3), Action(G, 4), Action(G, 5) },
-        /*1*/    {Action(), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(),  Action(),  Action(), Action(4, 0),  Action(), Action(),  Action(),  Action()},
-        /*2*/    {Action(R, 11), Action(S, 8),  Action(R, 11),  Action(R, 11),  Action(R, 11), Action(R, 11), Action(R, 11),  Action(R, 11),  Action(R, 11),  Action(R, 11), Action(R, 11),  Action(), Action(),  Action(),  Action()},
-        /*3*/    {Action(R, 2), Action(R,2),  Action(S,9),  Action(S,10),  Action(R,2), Action(R,2), Action(R,2),  Action(R,2),  Action(R,2),  Action(R,2), Action(R,2),  Action(), Action(),  Action(),  Action()},
-        /*4*/    {Action(R, 3), Action(R, 3),  Action(R,3),  Action(R,3),  Action(S, 11), Action(S,12), Action(S,13),  Action(R,3),  Action(R,3),  Action(R,3), Action(R,3),  Action(), Action(),  Action(),  Action()},
-        /*5*/    {Action(R, 6), Action(R, 6),  Action(R, 6),  Action(R, 6),  Action(R, 6), Action(R, 6), Action(R, 6),  Action(R, 6),  Action(R, 6),  Action(R, 6), Action(R, 6),  Action(), Action(),  Action(),  Action()},
-        /*6*/    {Action(S, 15), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(S,6),  Action(),  Action(S, 7), Action(0, 0),  Action(), Action(G, 14),  Action(G, 4),  Action(G, 5)},
-        /*7*/    {Action(R, 12), Action(R, 12),  Action(R, 12),  Action(R, 12),  Action(R, 12), Action(R, 12), Action(R, 12),  Action(R, 12),  Action(R, 12),  Action(R, 12), Action(R, 12),  Action(), Action(),  Action(),  Action()},
-        /*8*/    {Action(S, 15), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(S,6),  Action(),  Action(S, 7), Action(0, 0),  Action(), Action(G, 16),  Action(G, 4),  Action(G, 5)},
-        /*9*/    {Action(S, 15), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(S,6),  Action(),  Action(S, 7), Action(0, 0),  Action(), Action(),  Action(G, 17),  Action(G, 5)},
-        /*10*/   {Action(S, 15), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(S,6),  Action(),  Action(S, 7), Action(0, 0),  Action(), Action(),  Action(G, 18),  Action(G, 5)},
-        /*11*/   {Action(S, 15), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(S,6),  Action(),  Action(S, 7), Action(0, 0),  Action(), Action(),  Action(),  Action(G, 19)},
-        /*12*/   {Action(S, 15), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(S,6),  Action(),  Action(S, 7), Action(0, 0),  Action(), Action(),  Action(),  Action(G, 20)},
-        /*13*/   {Action(S, 15), Action(),  Action(),  Action(),  Action(), Action(), Action(),  Action(S,6),  Action(),  Action(S, 7), Action(0, 0),  Action(), Action(),  Action(),  Action(G, 21)},
-        /*14*/   {Action(), Action(),  Action(S, 9),  Action(S, 10),  Action(), Action(), Action(),  Action(),  Action(S, 22),  Action(), Action(),  Action(), Action(),  Action(),  Action()},
-        /*15*/   {Action(R, 11), Action(R, 11),  Action(R, 11),  Action(R, 11),  Action(R, 11), Action(R, 11), Action(R, 11),  Action(R, 11),  Action(R, 11),  Action(R, 11), Action(R, 11),  Action(), Action(),  Action(),  Action()},
-        /*16*/   {Action(R, 1), Action(R, 1),  Action(S, 9),  Action(S, 10),  Action(R,1), Action(R, 1), Action(R, 1),  Action(R, 1),  Action(R, 1),  Action(R, 1), Action(R, 1),  Action(), Action(),  Action(),  Action()},
-        /*17*/   {Action(R,4), Action(R,4),  Action(R,4),  Action(R,4),  Action(S, 11), Action(S, 12), Action(S,13),  Action(R,4),  Action(R,4),  Action(R,4), Action(R,4),  Action(), Action(),  Action(),  Action()},
-        /*18*/   {Action(R,5), Action(R,5),  Action(R,5),  Action(R,5),  Action(S, 11), Action(S, 12), Action(S,13),  Action(R,5),  Action(R,5),  Action(R,5), Action(R,5),  Action(), Action(),  Action(),  Action()},
-        /*19*/   {Action(R,7), Action(R,7),  Action(R,7),  Action(R,7),  Action(R,7), Action(R,7), Action(R,7),  Action(R,7),  Action(R,7),  Action(R,7), Action(R,7),  Action(), Action(),  Action(),  Action()},
-        /*20*/   {Action(R,8), Action(R,8),  Action(R,8),  Action(R,8),  Action(R,8), Action(R,8), Action(R,8),  Action(R,8),  Action(R,8),  Action(R,8), Action(R,8),  Action(), Action(),  Action(),  Action()},
-        /*21*/   {Action(R,9), Action(R,9),  Action(R,9),  Action(R,9),  Action(R,9), Action(R,9), Action(R,9),  Action(R,9),  Action(R,9),  Action(R,9), Action(R,9),  Action(), Action(),  Action(),  Action()},
-        /*22*/   {Action(R,10), Action(R,10),  Action(R,10),  Action(R,10),  Action(R,10), Action(R,10), Action(R,10),  Action(R,10),  Action(R,10),  Action(R,10), Action(R,10),  Action(), Action(),  Action(),  Action()},
+    const Action array[25][15] = {
+        /*0*/	{Action(S,2), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(G, 1), Action(G, 3), Action(G, 4), Action(G, 5), },
+        /*1*/	{Action(), Action(), Action(), Action(), Action(), Action(), Action(), Action(), Action(), Action(), Action(4,0), Action(), Action(), Action(), Action(), },
+        /*2*/	{Action(R,11), Action(S,9), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(), Action(), Action(), Action(), },
+        /*3*/	{Action(R,2), Action(R,2), Action(S,10), Action(S,11), Action(R,2), Action(R,2), Action(R,2), Action(R,2), Action(R,2), Action(R,2), Action(R,2), Action(), Action(), Action(), Action(), },
+        /*4*/	{Action(R,3), Action(R,3), Action(R,3), Action(R,3), Action(S,12), Action(S,13), Action(S,14), Action(R,3), Action(R,3), Action(R,3), Action(R,3), Action(), Action(), Action(), Action(), },
+        /*5*/	{Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(R,6), Action(), Action(), Action(), Action(), },
+        /*6*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(G, 15), Action(G, 4), Action(G, 5), },
+        /*7*/	{Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(R,12), Action(), Action(), Action(), Action(), },
+        /*8*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(), Action(), Action(G, 17), },
+        /*9*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(G, 18), Action(G, 4), Action(G, 5), },
+        /*10*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(), Action(G, 19), Action(G, 5), },
+        /*11*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(), Action(G, 20), Action(G, 5), },
+        /*12*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(), Action(), Action(G, 21), },
+        /*13*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(), Action(), Action(G, 22), },
+        /*14*/	{Action(S,16), Action(), Action(), Action(S,8), Action(), Action(), Action(), Action(S,6), Action(), Action(S,7), Action(), Action(), Action(), Action(), Action(G, 23), },
+        /*15*/	{Action(), Action(), Action(S,10), Action(S,11), Action(), Action(), Action(), Action(), Action(S,24), Action(), Action(), Action(), Action(), Action(), Action(), },
+        /*16*/	{Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(R,11), Action(), Action(), Action(), Action(), },
+        /*17*/	{Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(R,13), Action(), Action(), Action(), Action(), },
+        /*18*/	{Action(R,1), Action(R,1), Action(S,10), Action(S,11), Action(R,1), Action(R,1), Action(R,1), Action(R,1), Action(R,1), Action(R,1), Action(R,1), Action(), Action(), Action(), Action(), },
+        /*19*/	{Action(R,4), Action(R,4), Action(R,4), Action(R,4), Action(S,12), Action(S,13), Action(S,14), Action(R,4), Action(R,4), Action(R,4), Action(R,4), Action(), Action(), Action(), Action(), },
+        /*20*/	{Action(R,5), Action(R,5), Action(R,5), Action(R,5), Action(S,12), Action(S,13), Action(S,14), Action(R,5), Action(R,5), Action(R,5), Action(R,5), Action(), Action(), Action(), Action(), },
+        /*21*/	{Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(R,7), Action(), Action(), Action(), Action(), },
+        /*22*/	{Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(R,8), Action(), Action(), Action(), Action(), },
+        /*23*/	{Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(R,9), Action(), Action(), Action(), Action(), },
+        /*24*/	{Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(R,10), Action(), Action(), Action(), Action(), },
     };
     /*
     cout << "Actions: \n";
@@ -237,7 +240,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 3: E -> T
                 if (tokenStack.back().kind == "T") {
                     // cout << "REMOVING: " << tokenStack.back() << endl;
-                    Token tempE = Token("E", tokenStack.back().value); //Gets value of v. 
+                    Token tempE = Token("E", tokenStack.back().value); //Gets value of T. 
                     tokenStack.pop_back();
                     tokenStack.push_back(tempE);
                     rowStack.pop_back(); //Removes the last number from rowStack.
@@ -251,7 +254,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 5: E -> E - T
                 if (tokenStack.back().kind == "T" && tokenStack.at(tokenStack.size() - 2).kind == "-" && tokenStack.at(tokenStack.size() - 3).kind == "E") {
                     // cout << "REMOVING: " << tokenStack.at(tokenStack.size() - 3) << " - " << tokenStack.back() <<  endl;
-                    Token tempT = Token("E", (tokenStack.at(tokenStack.size() - 3).value - tokenStack.back().value)); //Gets value of v. 
+                    Token tempT = Token("E", (tokenStack.at(tokenStack.size() - 3).value - tokenStack.back().value)); //Gets value of E - T. 
                     tokenStack.pop_back();
                     tokenStack.pop_back();
                     tokenStack.pop_back();
@@ -269,7 +272,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 4: E -> E + T
                 if (tokenStack.back().kind == "T" && tokenStack.at(tokenStack.size() - 2).kind == "+" && tokenStack.at(tokenStack.size() - 3).kind == "E") {
                     // cout << "REMOVING: " << tokenStack.at(tokenStack.size() - 3) << " + " << tokenStack.back() <<  endl;
-                    Token tempT = Token("E", (tokenStack.at(tokenStack.size() - 3).value + tokenStack.back().value));
+                    Token tempT = Token("E", (tokenStack.at(tokenStack.size() - 3).value + tokenStack.back().value)); //Gets value of E + T
                     tokenStack.pop_back();
                     tokenStack.pop_back();
                     tokenStack.pop_back();
@@ -287,7 +290,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 6: T -> P
                 if (tokenStack.back().kind == "P") {
                     // cout << "REMOVING: " << tokenStack.back() <<  endl;
-                    Token tempT = Token("T", tokenStack.back().value); //Gets value of v. 
+                    Token tempT = Token("T", tokenStack.back().value); //Gets value of P. 
                     tokenStack.pop_back();
                     tokenStack.push_back(tempT);
                     rowStack.pop_back(); //Removes the last number from rowStack.
@@ -301,7 +304,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 7: T -> T *  P
                 if (tokenStack.back().kind == "P" && tokenStack.at(tokenStack.size() - 2).kind == "*" && tokenStack.at(tokenStack.size() - 3).kind == "T") {
                     // cout << "REMOVING: " << tokenStack.at(tokenStack.size() - 3) << " * " << tokenStack.back() <<  endl;
-                    Token tempT = Token("T", (tokenStack.at(tokenStack.size() - 3).value * tokenStack.back().value)); //Gets value of v. 
+                    Token tempT = Token("T", (tokenStack.at(tokenStack.size() - 3).value * tokenStack.back().value)); //Gets value of T * P. 
                     tokenStack.pop_back();
                     tokenStack.pop_back();
                     tokenStack.pop_back();
@@ -319,7 +322,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 8: T -> T /  P
                 if (tokenStack.back().kind == "P" && tokenStack.at(tokenStack.size() - 2).kind == "/" && tokenStack.at(tokenStack.size() - 3).kind == "T") {
                     // cout << "REMOVING: " << tokenStack.at(tokenStack.size() - 3) << " / " << tokenStack.back() << endl;
-                    Token tempT = Token("T", (tokenStack.at(tokenStack.size() - 3).value / tokenStack.back().value)); //Gets value of v. 
+                    Token tempT = Token("T", (tokenStack.at(tokenStack.size() - 3).value / tokenStack.back().value)); //Gets value of T / P. 
                     tokenStack.pop_back();
                     tokenStack.pop_back();
                     tokenStack.pop_back();
@@ -337,7 +340,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 9: T -> T %  P
                 if (tokenStack.back().kind == "P" && tokenStack.at(tokenStack.size() - 2).kind == "%" && tokenStack.at(tokenStack.size() - 3).kind == "T") {
                     // cout << "REMOVING: " << tokenStack.at(tokenStack.size() - 3) << " % " << tokenStack.back() <<  endl;
-                    Token tempT = Token("T", (int(tokenStack.at(tokenStack.size() - 3).value) % int(tokenStack.back().value))); //Gets value of v. 
+                    Token tempT = Token("T", (int(tokenStack.at(tokenStack.size() - 3).value) % int(tokenStack.back().value))); //Gets value of T % P. 
                     tokenStack.pop_back();
                     tokenStack.pop_back();
                     tokenStack.pop_back();
@@ -355,7 +358,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 10: P -> ( E )
                 if (tokenStack.back().kind == "RP" && tokenStack.at(tokenStack.size() - 2).kind == "E" && tokenStack.at(tokenStack.size() - 3).kind == "LP") {
                     // cout << "REMOVING: (" << tokenStack.at(tokenStack.size() - 2)  << ")" << endl;
-                    Token tempP = Token("P", tokenStack.at(tokenStack.size() - 2).value); //Gets value of v. 
+                    Token tempP = Token("P", tokenStack.at(tokenStack.size() - 2).value); //Gets value of E. 
                     tokenStack.pop_back();
                     tokenStack.pop_back();
                     tokenStack.pop_back();
@@ -388,7 +391,7 @@ double compute(vector<Token>& tokens) {
                 //Rule 12: P -> d
                 if (tokenStack.back().kind == "d") {
                     // cout << "REMOVING: " << tokenStack.back() <<  endl;
-                    Token tempP = Token("P", tokenStack.back().value); //Gets value of v. 
+                    Token tempP = Token("P", tokenStack.back().value); //Gets value of d. 
                     tokenStack.pop_back();
                     tokenStack.push_back(tempP);
                     rowStack.pop_back(); //Removes the last number from rowStack.
@@ -396,6 +399,21 @@ double compute(vector<Token>& tokens) {
                 }
                 else {
                     cout << "MAJOR ERROR: Token Not 'v'\n";
+                }
+            }
+            else if (nextAction.number == 13) {
+                //Rule 13: P -> - P
+                if (tokenStack.back().kind == "P" && tokenStack.at(tokenStack.size() - 2).kind == "-") {
+                    Token tempP = Token("P", (-1 * tokenStack.back().value)); //Gets value of P. 
+                    tokenStack.pop_back();
+                    tokenStack.pop_back();
+                    tokenStack.push_back(tempP);
+                    rowStack.pop_back(); //Removes the last number from rowStack.
+                    rowStack.pop_back();
+                    rowStack.push_back(getAction(rowStack.back(), getColumn("P")).number); //Adds the correct number
+                }
+                else {
+                    cout << "MAJOR ERROR: Token Not '- P'\n";
                 }
             }
         }
@@ -473,15 +491,19 @@ vector<Token> parse(string& line) {
 }
 
 int main() {
+    //Inserts some predifined constants that can be changed by the user. 
+    variables.insert({ "PI", 3.1415 });
+    variables.insert({ "Pi", 3.1415 });
+    variables.insert({ "pi", 3.1415 });
+    variables.insert({ "e", 2.71828182845904523536 });
+
+
     cout << "Calculator App!\n";
     string str;
     while (getline(cin, str)) {
         vector<Token> vec = parse(str);
-        // printContainer(vec.begin(), vec.end());
-        // cout << endl;
         compute(vec);
         cout << endl;
-
     }
     return 0;
 }
