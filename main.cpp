@@ -319,6 +319,7 @@ double compute(vector<Token>& tokens) {
                 }
             }
             else if (nextAction.number == 8) {
+                cout << "Division is being Used!\n"; 
                 //Rule 8: T -> T /  P
                 if (tokenStack.back().kind == "P" && tokenStack.at(tokenStack.size() - 2).kind == "/" && tokenStack.at(tokenStack.size() - 3).kind == "T") {
                     // cout << "REMOVING: " << tokenStack.at(tokenStack.size() - 3) << " / " << tokenStack.back() << endl;
@@ -337,10 +338,12 @@ double compute(vector<Token>& tokens) {
                 }
             }
             else if (nextAction.number == 9) {
+                cout << "Modulo Is being Used!\n";
                 //Rule 9: T -> T %  P
                 if (tokenStack.back().kind == "P" && tokenStack.at(tokenStack.size() - 2).kind == "%" && tokenStack.at(tokenStack.size() - 3).kind == "T") {
                     // cout << "REMOVING: " << tokenStack.at(tokenStack.size() - 3) << " % " << tokenStack.back() <<  endl;
                     Token tempT = Token("T", (int(tokenStack.at(tokenStack.size() - 3).value) % int(tokenStack.back().value))); //Gets value of T % P. 
+                    cout << "TempT = " << tempT.value << "\n";
                     tokenStack.pop_back();
                     tokenStack.pop_back();
                     tokenStack.pop_back();
@@ -479,6 +482,7 @@ vector<Token> parse(string& line) {
         case '*':
         case '/':
         case '=':
+        case '%':
             tokens.push_back(Token(string(1, line.at(i))));
         }
 
@@ -492,9 +496,9 @@ vector<Token> parse(string& line) {
 
 int main() {
     //Inserts some predifined constants that can be changed by the user. 
-    variables.insert({ "PI", 3.1415 });
-    variables.insert({ "Pi", 3.1415 });
-    variables.insert({ "pi", 3.1415 });
+    variables.insert({ "PI", 3.141592653589793116 });
+    variables.insert({ "Pi", 3.141592653589793116 });
+    variables.insert({ "pi", 3.141592653589793116 });
     variables.insert({ "e", 2.71828182845904523536 });
 
 
